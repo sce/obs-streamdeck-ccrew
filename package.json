@@ -1,0 +1,10 @@
+{
+  "name": "streamdeck",
+  "version": "1.0.0",
+  "main": "run.js",
+  "author": "S. Christoffer Eliesen <christoffer@eliesen.no>",
+  "license": "",
+  "dependencies": {
+    "elgato-stream-deck": "^2.0.0"
+  }
+}
