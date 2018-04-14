@@ -15,17 +15,76 @@ const myStreamDeck = new StreamDeck();
 myStreamDeck.on('down', keyIndex => {
   switch (keyIndex) {
     case 0: {
+	    console.log('STUDIO MODE');
+      execFile('xdotool', ['key', '--delay', '100', 'alt+0']);
+      break;
+    }
+    case 1: {
 	    console.log('STARTING OBS');
+      break;
+    }
+    case 2: {
+	    console.log('BLUE TEAM');
+      execFile('xdotool', ['key', '--delay', '100', 'alt+1']);
+      break;
+    }
+    case 3: {
+	    console.log('INTRO');
+      execFile('xdotool', ['key', '--delay', '100', 'alt+2']);
+      break;
+    }
+    case 4: {
+	    console.log('PREVIOUS SCENE');
+      execFile('xdotool', ['key', '--delay', '100', 'alt+3']);
       break;
     }
     case 5: {
 	    console.log('START/STOP RECORDING');
-      execFile('xdotool', ['key', '--delay', '100', 'alt+d']);
+      execFile('xdotool', ['key', '--delay', '100', 'alt+4']);
+      break;
+    }
+    case 6: {
+	    console.log('STUDIO CAM');
+      execFile('xdotool', ['key', '--delay', '100', 'alt+a']);
+      break;
+    }
+    case 7: {
+	    console.log('Main View / STUDIO');
+      execFile('xdotool', ['key', '--delay', '100', 'alt+5']);
+      break;
+    }
+    case 8: {
+	    console.log('TRANSITION');
+      execFile('xdotool', ['key', '--delay', '100', 'alt+6']);
+      break;
+    }
+    case 9: {
+	    console.log('NEXT SCENE');
+      execFile('xdotool', ['key', '--delay', '100', 'alt+7']);
       break;
     }
     case 10: {
 	    console.log('START/STOP RECORDING');
-      execFile('xdotool', ['key', '--delay', '100', 'alt+d']);
+      execFile('xdotool', ['key', '--delay', '100', 'alt+8']);
+      break;
+    }
+    case 11: {
+	    console.log('STARTING OBS');
+      break;
+    }
+    case 12: {
+	    console.log('RED TEAM');
+      execFile('xdotool', ['key', '--delay', '100', 'alt+9']);
+      break;
+    }
+    case 13: {
+	    console.log('CREDITS');
+      execFile('xdotool', ['key', '--delay', '100', 'alt+q']);
+      break;
+    }
+    case 14: {
+	    console.log('CHANGE SCENE');
+      execFile('xdotool', ['key', '--delay', '100', 'alt+w']);
       break;
     }
     default:
@@ -84,6 +143,11 @@ setTimeout(() => {
   myStreamDeck.fillImageFromFile(14, path.resolve(__dirname, 'font-awesome_4-7-0_exchange-90.png')).then(() => {
     console.log(`Exchange.`);
   });
+  myStreamDeck.fillImageFromFile(7, path.resolve(__dirname, 'font-awesome_4-7-0_video-camera.png')).then(() => {
+    console.log('Main video');
+  });
+  myStreamDeck.fillColor(2, 0, 0, 255);
+  myStreamDeck.fillColor(12, 255, 0, 0);
 
 }, 1000);
 
