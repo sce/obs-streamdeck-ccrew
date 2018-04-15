@@ -148,7 +148,18 @@ setTimeout(() => {
   });
   myStreamDeck.fillColor(2, 0, 0, 255);
   myStreamDeck.fillColor(12, 255, 0, 0);
-
+  myStreamDeck.fillImageFromFile(3, path.resolve(__dirname, 'ionicons_2-0-1_film-marker_256_0_ffffff_none.png')).then(() => {
+    console.log('Intro scene');
+  });
+  myStreamDeck.fillImageFromFile(6, path.resolve(__dirname, 'musician-rock-star-010-256.png')).then(() => {
+    console.log('Studio scene');
+  });
+  myStreamDeck.fillImageFromFile(8, path.resolve(__dirname, 'transition-cover-256.png')).then(() => {
+    console.log('Transition');
+  });
+  myStreamDeck.fillImageFromFile(13, path.resolve(__dirname, 'font-awesome_4-7-0_copyright_256_0_ffffff_none.png')).then(() => {
+    console.log('Credits scene');
+  });
 }, 1000);
 
 // Fill the first button form the left in the first row with a solid red color. This is synchronous.
