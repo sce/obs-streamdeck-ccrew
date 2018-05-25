@@ -40,6 +40,14 @@ const actions = {
   5: () => runRequest('player2_hand', 'data=scissors'),
   10: () => runRequest('player2_hand', 'data=paper'),
 
+  1: null,
+  6: () => runRequest('finalize'),
+  11: null,
+
+  2: null,
+  7: () => runRequest('finalize'),
+  12: null,
+
   3: () => runRequest('player2_hand', 'data=rock'),
   8: () => runRequest('player2_hand', 'data=scissors'),
   13: () => runRequest('player2_hand', 'data=paper'),
@@ -47,9 +55,28 @@ const actions = {
   4: () => runRequest('player1_hand', 'data=rock'),
   9: () => runRequest('player1_hand', 'data=scissors'),
   14: () => runRequest('player1_hand', 'data=paper'),
+};
 
-  6: () => runRequest('finalize'),
-  7: () => runRequest('finalize'),
+const assets = {
+  0: path.resolve(__dirname, 'rps-assets', 'rps-right-rock.png'),
+  5: path.resolve(__dirname, 'rps-assets', 'rps-right-scissors.png'),
+  10: path.resolve(__dirname, 'rps-assets', 'rps-right-paper.png'),
+
+  1: null,
+  6: [0, 255, 0],
+  11: null,
+
+  2: null,
+  7: [0, 255, 0],
+  12: null,
+
+  3: path.resolve(__dirname, 'rps-assets', 'rps-right-rock.png'),
+  8: path.resolve(__dirname, 'rps-assets', 'rps-right-scissors.png'),
+  13: path.resolve(__dirname, 'rps-assets', 'rps-right-paper.png'),
+
+  4: path.resolve(__dirname, 'rps-assets', 'rps-left-rock.png'),
+  9: path.resolve(__dirname, 'rps-assets', 'rps-left-scissors.png'),
+  14: path.resolve(__dirname, 'rps-assets', 'rps-left-paper.png'),
 };
 
 myStreamDeck.on('down', keyIndex => {
@@ -89,51 +116,22 @@ const promises = [...Array(15).keys()]
 
 // the above icons are async, so wait for them to finish :-P
 Promise.all(promises).then(() => {
-  myStreamDeck.fillImageFromFile(4, path.resolve(__dirname, 'rps-assets', 'rps-left-rock.png')).then(() => {
-    console.log('left-rock');
-  });
-
-  myStreamDeck.fillImageFromFile(9, path.resolve(__dirname, 'rps-assets', 'rps-left-scissors.png')).then(() => {
-    console.log('left-scissors');
-  });
-
-  myStreamDeck.fillImageFromFile(14, path.resolve(__dirname, 'rps-assets', 'rps-left-paper.png')).then(() => {
-    console.log('left-paper');
-  });
-
-  // ------------------------------------------------------------------------------
-  myStreamDeck.fillImageFromFile(3, path.resolve(__dirname, 'rps-assets', 'rps-right-rock.png')).then(() => {
-    console.log('right-rock');
-  });
-
-  myStreamDeck.fillImageFromFile(8, path.resolve(__dirname, 'rps-assets', 'rps-right-scissors.png')).then(() => {
-    console.log('right-scissors');
-  });
-
-  myStreamDeck.fillImageFromFile(13, path.resolve(__dirname, 'rps-assets', 'rps-right-paper.png')).then(() => {
-    console.log('right-paper');
-  });
-
-  // ------------------------------------------------------------------------------
-  myStreamDeck.fillImageFromFile(0, path.resolve(__dirname, 'rps-assets', 'rps-right-rock.png')).then(() => {
-    console.log('right-rock');
-  });
-
-  myStreamDeck.fillImageFromFile(5, path.resolve(__dirname, 'rps-assets', 'rps-right-scissors.png')).then(() => {
-    console.log('right-scissors');
-  });
-
-  myStreamDeck.fillImageFromFile(10, path.resolve(__dirname, 'rps-assets', 'rps-right-paper.png')).then(() => {
-    console.log('right-paper');
-  });
-
-  // ------------------------------------------------------------------------------
-  // myStreamDeck.fillColor(1, 255, 0, 0);
-  // myStreamDeck.fillColor(2, 255, 0, 0);
-
-  myStreamDeck.fillColor(6, 0, 255, 0);
-  myStreamDeck.fillColor(7, 0, 255, 0);
-
+  //return Promise.all(Object.keys(assets).map(i => {
+  return Promise.all([...Array(15).keys()].map(i => {
+    const val = assets[i];
+    if (val == null) {
+      // ignore
+      return Promise.resolve();
+    } else if (Array.isArray(val)) {
+      myStreamDeck.fillColor(i, ...val);
+      console.log(i, val);
+      return Promise.resolve();
+    } else {
+      return myStreamDeck.fillImageFromFile(i, val)
+        .then(() => console.log("fillImage:", i, val))
+        .catch(err => console.log("FAILED", val, err));
+    }
+  }));
 })
   .then(() => console.log("ready!"));
 
