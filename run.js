@@ -35,84 +35,29 @@ const runRequest = (...args) => {
     .catch(res => console.error(res.message));
 };
 
+const actions = {
+  0: () => runRequest('player2_hand', 'data=rock'),
+  5: () => runRequest('player2_hand', 'data=scissors'),
+  10: () => runRequest('player2_hand', 'data=paper'),
+
+  3: () => runRequest('player2_hand', 'data=rock'),
+  8: () => runRequest('player2_hand', 'data=scissors'),
+  13: () => runRequest('player2_hand', 'data=paper'),
+
+  4: () => runRequest('player1_hand', 'data=rock'),
+  9: () => runRequest('player1_hand', 'data=scissors'),
+  14: () => runRequest('player1_hand', 'data=paper'),
+
+  6: () => runRequest('finalize'),
+  7: () => runRequest('finalize'),
+};
+
 myStreamDeck.on('down', keyIndex => {
-  switch (keyIndex) {
-    case 0: {
-	    console.log('STUDIO MODE');
-      runRequest('set_round_win', 'data=1');
-      break;
-    }
-    case 1: {
-	    console.log('STARTING OBS');
-      runRequest('set_round_win', 'data=2');
-      break;
-    }
-    case 2: {
-	    console.log('BLUE TEAM');
-      runRequest('reset_game');
-      break;
-    }
-    case 3: {
-	    console.log('INTRO');
-      runRequest('player2_hand', 'data=rock');
-      break;
-    }
-    case 4: {
-	    console.log('PREVIOUS SCENE');
-      runRequest('player1_hand', 'data=rock');
-      break;
-    }
-    case 5: {
-	    console.log('START/STOP RECORDING');
-      break;
-    }
-    case 6: {
-	    console.log('STUDIO CAM');
-      runRequest('finalize');
-      break;
-    }
-    case 7: {
-	    console.log('Main View / STUDIO');
-      doExec('xdotool', ['key', '--delay', '100', 'alt+5']);
-      break;
-    }
-    case 8: {
-	    console.log('TRANSITION');
-      runRequest('player2_hand', 'data=scissors');
-      break;
-    }
-    case 9: {
-	    console.log('NEXT SCENE');
-      runRequest('player1_hand', 'data=scissors');
-      break;
-    }
-    case 10: {
-	    console.log('START/STOP RECORDING');
-      doExec('xdotool', ['key', '--delay', '100', 'alt+8']);
-      break;
-    }
-    case 11: {
-	    console.log('STARTING OBS');
-      break;
-    }
-    case 12: {
-	    console.log('RED TEAM');
-      doExec('xdotool', ['key', '--delay', '100', 'alt+9']);
-      break;
-    }
-    case 13: {
-	    console.log('CREDITS');
-      runRequest('player2_hand', 'data=paper');
-      break;
-    }
-    case 14: {
-	    console.log('CHANGE SCENE');
-      runRequest('player1_hand', 'data=paper');
-      break;
-    }
-    default:
-	    console.log('key %d down', keyIndex);
-      break;
+  const action = actions[keyIndex];
+  if (action) {
+    action();
+  } else {
+    console.log('unconfigured key down:', keyIndex);
   }
 });
 
@@ -135,55 +80,62 @@ myStreamDeck.on('error', error => {
 // 	console.log('Successfully wrote a logo to panel.');
 // });
 
-[...Array(15).keys()].forEach(num => {
-  myStreamDeck.fillImageFromFile(num, path.resolve(__dirname, '5.png')).then(() => {
-    console.log(`Successfully wrote a some logo to key ${num}.`);
-  });
-});
 
-setTimeout(() => {
-  // the above icons are async, so wait for them to finish :-P
-  myStreamDeck.fillImageFromFile(0, path.resolve(__dirname, 'Open_Broadcaster_Software_Logo-90.png')).then(() => {
-    console.log(`Successfully added OBS-logo.`);
-  });
+const promises = [...Array(15).keys()]
+  .map(num => (
+    myStreamDeck.fillImageFromFile(num, path.resolve(__dirname, '5.png'))
+      .then(() => console.log(`Successfully wrote a some logo to key ${num}.`))
+  ));
 
-  myStreamDeck.fillImageFromFile(10, path.resolve(__dirname, 'record-90.png')).then(() => {
-    console.log(`Record.`);
+// the above icons are async, so wait for them to finish :-P
+Promise.all(promises).then(() => {
+  myStreamDeck.fillImageFromFile(4, path.resolve(__dirname, 'rps-assets', 'rps-left-rock.png')).then(() => {
+    console.log('left-rock');
   });
 
-  myStreamDeck.fillImageFromFile(5, path.resolve(__dirname, 'font-awesome_4-7-0_stop-90.png')).then(() => {
-    console.log(`Stop.`);
+  myStreamDeck.fillImageFromFile(9, path.resolve(__dirname, 'rps-assets', 'rps-left-scissors.png')).then(() => {
+    console.log('left-scissors');
   });
 
-  myStreamDeck.fillImageFromFile(4, path.resolve(__dirname, 'font-awesome_4-7-0_chevron-circle-left-90.png')).then(() => {
-    console.log(`Left-arrow.`);
+  myStreamDeck.fillImageFromFile(14, path.resolve(__dirname, 'rps-assets', 'rps-left-paper.png')).then(() => {
+    console.log('left-paper');
   });
 
-  myStreamDeck.fillImageFromFile(9, path.resolve(__dirname, 'font-awesome_4-7-0_chevron-circle-right-90.png')).then(() => {
-    console.log(`Right-arrow.`);
+  // ------------------------------------------------------------------------------
+  myStreamDeck.fillImageFromFile(3, path.resolve(__dirname, 'rps-assets', 'rps-right-rock.png')).then(() => {
+    console.log('right-rock');
   });
 
-  myStreamDeck.fillImageFromFile(14, path.resolve(__dirname, 'font-awesome_4-7-0_exchange-90.png')).then(() => {
-    console.log(`Exchange.`);
+  myStreamDeck.fillImageFromFile(8, path.resolve(__dirname, 'rps-assets', 'rps-right-scissors.png')).then(() => {
+    console.log('right-scissors');
   });
-  myStreamDeck.fillImageFromFile(7, path.resolve(__dirname, 'font-awesome_4-7-0_video-camera.png')).then(() => {
-    console.log('Main video');
+
+  myStreamDeck.fillImageFromFile(13, path.resolve(__dirname, 'rps-assets', 'rps-right-paper.png')).then(() => {
+    console.log('right-paper');
   });
-  myStreamDeck.fillColor(2, 0, 0, 255);
-  myStreamDeck.fillColor(12, 255, 0, 0);
-  myStreamDeck.fillImageFromFile(3, path.resolve(__dirname, 'ionicons_2-0-1_film-marker_256_0_ffffff_none.png')).then(() => {
-    console.log('Intro scene');
+
+  // ------------------------------------------------------------------------------
+  myStreamDeck.fillImageFromFile(0, path.resolve(__dirname, 'rps-assets', 'rps-right-rock.png')).then(() => {
+    console.log('right-rock');
   });
-  myStreamDeck.fillImageFromFile(6, path.resolve(__dirname, 'musician-rock-star-010-256.png')).then(() => {
-    console.log('Studio scene');
+
+  myStreamDeck.fillImageFromFile(5, path.resolve(__dirname, 'rps-assets', 'rps-right-scissors.png')).then(() => {
+    console.log('right-scissors');
   });
-  myStreamDeck.fillImageFromFile(8, path.resolve(__dirname, 'transition-cover-256.png')).then(() => {
-    console.log('Transition');
+
+  myStreamDeck.fillImageFromFile(10, path.resolve(__dirname, 'rps-assets', 'rps-right-paper.png')).then(() => {
+    console.log('right-paper');
   });
-  myStreamDeck.fillImageFromFile(13, path.resolve(__dirname, 'font-awesome_4-7-0_copyright_256_0_ffffff_none.png')).then(() => {
-    console.log('Credits scene');
-  });
-}, 1000);
+
+  // ------------------------------------------------------------------------------
+  // myStreamDeck.fillColor(1, 255, 0, 0);
+  // myStreamDeck.fillColor(2, 255, 0, 0);
+
+  myStreamDeck.fillColor(6, 0, 255, 0);
+  myStreamDeck.fillColor(7, 0, 255, 0);
+
+})
+  .then(() => console.log("ready!"));
 
 // Fill the first button form the left in the first row with a solid red color. This is synchronous.
 // myStreamDeck.fillColor(4, 255, 0, 0);
