@@ -44,7 +44,7 @@ const actions = {
   6: () => runRequest('finalize'),
   11: null,
 
-  2: null,
+  2: () => runRequest('reset_game'),
   7: () => runRequest('finalize'),
   12: null,
 
@@ -66,7 +66,7 @@ const assets = {
   6: [0, 255, 0],
   11: null,
 
-  2: null,
+  2: [255, 0, 0],
   7: [0, 255, 0],
   12: null,
 
