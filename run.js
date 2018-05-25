@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
 const path = require('path');
-const StreamDeck = require('elgato-stream-deck');
-
 const { execFile } = require('child_process');
+
+const axios = require('axios');
+const StreamDeck = require('elgato-stream-deck');
 
 // Automatically discovers connected Stream Decks, and attaches to the first one.
 // Throws if there are no connected stream decks.
@@ -12,60 +13,83 @@ const { execFile } = require('child_process');
 // Device paths can be obtained via node-hid: https://github.com/node-hid/node-hid
 const myStreamDeck = new StreamDeck();
 
+const doExec = (...args) => {
+  console.log(...args);
+  // execFile(...args);
+};
+
+// const url = 'http://localhost:9090/bundles/nodecg-ccrew-rps/graphics/api.html';
+const url = 'http://localhost:9090/nodecg-ccrew-rps/api';
+
+// urlFor('a=b', 'c=d')
+// const urlFor = (...args) => `${url}?${args.join("&")}`;
+// urlFor('some_action', 'c=d')
+const urlFor = (action, ...args) => `${url}/${action}?${args.join("&")}`;
+
+const runRequest = (...args) => {
+  const url = urlFor(...args);
+  console.log("runRequest:", url);
+  return axios.get(url)
+    //.then(res => console.log(res.data))
+    .then(res => console.log(res.status))
+    .catch(res => console.error(res.message));
+};
+
 myStreamDeck.on('down', keyIndex => {
   switch (keyIndex) {
     case 0: {
 	    console.log('STUDIO MODE');
-      execFile('xdotool', ['key', '--delay', '100', 'alt+0']);
+      runRequest('set_round_win', 'data=1');
       break;
     }
     case 1: {
 	    console.log('STARTING OBS');
+      runRequest('set_round_win', 'data=2');
       break;
     }
     case 2: {
 	    console.log('BLUE TEAM');
-      execFile('xdotool', ['key', '--delay', '100', 'alt+1']);
+      runRequest('reset_game');
       break;
     }
     case 3: {
 	    console.log('INTRO');
-      execFile('xdotool', ['key', '--delay', '100', 'alt+2']);
+      doExec('xdotool', ['key', '--delay', '100', 'alt+2']);
       break;
     }
     case 4: {
 	    console.log('PREVIOUS SCENE');
-      execFile('xdotool', ['key', '--delay', '100', 'alt+3']);
+      doExec('xdotool', ['key', '--delay', '100', 'alt+3']);
       break;
     }
     case 5: {
 	    console.log('START/STOP RECORDING');
-      execFile('xdotool', ['key', '--delay', '100', 'alt+4']);
+      doExec('xdotool', ['key', '--delay', '100', 'alt+4']);
       break;
     }
     case 6: {
 	    console.log('STUDIO CAM');
-      execFile('xdotool', ['key', '--delay', '100', 'alt+a']);
+      doExec('xdotool', ['key', '--delay', '100', 'alt+a']);
       break;
     }
     case 7: {
 	    console.log('Main View / STUDIO');
-      execFile('xdotool', ['key', '--delay', '100', 'alt+5']);
+      doExec('xdotool', ['key', '--delay', '100', 'alt+5']);
       break;
     }
     case 8: {
 	    console.log('TRANSITION');
-      execFile('xdotool', ['key', '--delay', '100', 'alt+6']);
+      doExec('xdotool', ['key', '--delay', '100', 'alt+6']);
       break;
     }
     case 9: {
 	    console.log('NEXT SCENE');
-      execFile('xdotool', ['key', '--delay', '100', 'alt+7']);
+      doExec('xdotool', ['key', '--delay', '100', 'alt+7']);
       break;
     }
     case 10: {
 	    console.log('START/STOP RECORDING');
-      execFile('xdotool', ['key', '--delay', '100', 'alt+8']);
+      doExec('xdotool', ['key', '--delay', '100', 'alt+8']);
       break;
     }
     case 11: {
@@ -74,17 +98,17 @@ myStreamDeck.on('down', keyIndex => {
     }
     case 12: {
 	    console.log('RED TEAM');
-      execFile('xdotool', ['key', '--delay', '100', 'alt+9']);
+      doExec('xdotool', ['key', '--delay', '100', 'alt+9']);
       break;
     }
     case 13: {
 	    console.log('CREDITS');
-      execFile('xdotool', ['key', '--delay', '100', 'alt+q']);
+      doExec('xdotool', ['key', '--delay', '100', 'alt+q']);
       break;
     }
     case 14: {
 	    console.log('CHANGE SCENE');
-      execFile('xdotool', ['key', '--delay', '100', 'alt+w']);
+      doExec('xdotool', ['key', '--delay', '100', 'alt+w']);
       break;
     }
     default:

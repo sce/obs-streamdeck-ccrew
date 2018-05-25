@@ -5,6 +5,7 @@
   "author": "S. Christoffer Eliesen <christoffer@eliesen.no>",
   "license": "",
   "dependencies": {
+    "axios": "^0.18.0",
     "elgato-stream-deck": "^2.0.0"
   }
 }
