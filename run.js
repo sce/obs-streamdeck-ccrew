@@ -54,22 +54,21 @@ myStreamDeck.on('down', keyIndex => {
     }
     case 3: {
 	    console.log('INTRO');
-      doExec('xdotool', ['key', '--delay', '100', 'alt+2']);
+      runRequest('player2_hand', 'data=rock');
       break;
     }
     case 4: {
 	    console.log('PREVIOUS SCENE');
-      doExec('xdotool', ['key', '--delay', '100', 'alt+3']);
+      runRequest('player1_hand', 'data=rock');
       break;
     }
     case 5: {
 	    console.log('START/STOP RECORDING');
-      doExec('xdotool', ['key', '--delay', '100', 'alt+4']);
       break;
     }
     case 6: {
 	    console.log('STUDIO CAM');
-      doExec('xdotool', ['key', '--delay', '100', 'alt+a']);
+      runRequest('finalize');
       break;
     }
     case 7: {
@@ -79,12 +78,12 @@ myStreamDeck.on('down', keyIndex => {
     }
     case 8: {
 	    console.log('TRANSITION');
-      doExec('xdotool', ['key', '--delay', '100', 'alt+6']);
+      runRequest('player2_hand', 'data=scissors');
       break;
     }
     case 9: {
 	    console.log('NEXT SCENE');
-      doExec('xdotool', ['key', '--delay', '100', 'alt+7']);
+      runRequest('player1_hand', 'data=scissors');
       break;
     }
     case 10: {
@@ -103,12 +102,12 @@ myStreamDeck.on('down', keyIndex => {
     }
     case 13: {
 	    console.log('CREDITS');
-      doExec('xdotool', ['key', '--delay', '100', 'alt+q']);
+      runRequest('player2_hand', 'data=paper');
       break;
     }
     case 14: {
 	    console.log('CHANGE SCENE');
-      doExec('xdotool', ['key', '--delay', '100', 'alt+w']);
+      runRequest('player1_hand', 'data=paper');
       break;
     }
     default:
