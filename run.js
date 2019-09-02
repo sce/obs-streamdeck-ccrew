@@ -4,14 +4,14 @@ const path = require('path');
 const { execFile } = require('child_process');
 
 const axios = require('axios');
-const StreamDeck = require('elgato-stream-deck');
+const { openStreamDeck } = require('elgato-stream-deck');
 
 // Automatically discovers connected Stream Decks, and attaches to the first one.
 // Throws if there are no connected stream decks.
 // You also have the option of providing the devicePath yourself as the first argument to the constructor.
 // For example: const myStreamDeck = new StreamDeck('\\\\?\\hid#vid_05f3&pid_0405&mi_00#7&56cf813&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}')
 // Device paths can be obtained via node-hid: https://github.com/node-hid/node-hid
-const myStreamDeck = new StreamDeck();
+const myStreamDeck = openStreamDeck();
 
 const doExec = (...args) => {
   console.log(...args);
